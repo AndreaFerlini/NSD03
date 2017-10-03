@@ -25,4 +25,14 @@ iostream
 -
 loadgraph.h
 /Users/AndreaFerlini/Documents/Education/Master/EIT-ITA/UPMC/NSD/Practical/Practical3/src/loadgraph.h
+pagerank.h
+/Users/AndreaFerlini/Documents/Education/Master/EIT-ITA/UPMC/NSD/Practical/Practical3/src/pagerank.h
+
+/Users/AndreaFerlini/Documents/Education/Master/EIT-ITA/UPMC/NSD/Practical/Practical3/src/pagerank.cpp
+pagerank.h
+/Users/AndreaFerlini/Documents/Education/Master/EIT-ITA/UPMC/NSD/Practical/Practical3/src/pagerank.h
+
+/Users/AndreaFerlini/Documents/Education/Master/EIT-ITA/UPMC/NSD/Practical/Practical3/src/pagerank.h
+loadgraph.h
+/Users/AndreaFerlini/Documents/Education/Master/EIT-ITA/UPMC/NSD/Practical/Practical3/src/loadgraph.h
 

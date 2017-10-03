@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/src.dir/main.cpp.o"
   "CMakeFiles/src.dir/loadgraph.cpp.o"
+  "CMakeFiles/src.dir/pagerank.cpp.o"
   "src.pdb"
   "src"
 )

@@ -82,8 +82,12 @@ int computeDegree(string filename, GraphDegree &nodesDegree, bool is_weighted, b
             }
 
             // Increase the degree of the node
+            /// TUNED LOAD GRAPH TO DEAL WITH ONLY IN_DEGREE
+            /*
             if (node)
                 nodesDegree.degree_array[node-1]++;
+            */
+
             // Increase the degree of the neighbour
             if (neighbour)
                 nodesDegree.degree_array[neighbour-1]++;
@@ -158,7 +162,8 @@ int loadAdjListContiguous(string filename, AdjacencyList& adjList, bool is_weigh
             }else{
                 graph >> node >> neighbour;
             }
-
+/// TUNED LOAD GRAPH TO DEAL WITH ONLY IN_NEIGHBOURS
+/*
             if(node) {
                 adjList.neighbours_list[adjList.list_beginning[node - 1]] = neighbour;
 
@@ -167,8 +172,8 @@ int loadAdjListContiguous(string filename, AdjacencyList& adjList, bool is_weigh
                     adjList.weights_list[adjList.list_beginning[node - 1]] = weight;
                 // Increase cursor to write the next neighbour in the correct location
                 adjList.list_beginning[node-1]++;
-
             }
+*/
 
             if(neighbour) {
                 adjList.neighbours_list[adjList.list_beginning[neighbour - 1]] = node;

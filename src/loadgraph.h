@@ -100,7 +100,7 @@ struct AdjacencyList{
         cout << "  Node      Neighbours" << endl;
         cout << "  --------------------------------------------------" << endl;
         for (unsigned int v_idx = 0; v_idx < num_vertices; v_idx++) {
-            cout << v_idx + 1 << " -> ";
+            cout << v_idx + 1 << " <- ";
             for (unsigned int neigh_index = 0; neigh_index < adjNodesDegree.degree_array[v_idx]; neigh_index++) {
                 cout << neighbours_list[list_beginning[v_idx] + neigh_index] << " ";
             }

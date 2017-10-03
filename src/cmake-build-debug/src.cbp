@@ -91,6 +91,12 @@
 		<Unit filename="/Users/AndreaFerlini/Documents/Education/Master/EIT-ITA/UPMC/NSD/Practical/Practical3/src/main.cpp">
 			<Option target="src"/>
 		</Unit>
+		<Unit filename="/Users/AndreaFerlini/Documents/Education/Master/EIT-ITA/UPMC/NSD/Practical/Practical3/src/pagerank.cpp">
+			<Option target="src"/>
+		</Unit>
+		<Unit filename="/Users/AndreaFerlini/Documents/Education/Master/EIT-ITA/UPMC/NSD/Practical/Practical3/src/pagerank.h">
+			<Option target="src"/>
+		</Unit>
 		<Unit filename="/Users/AndreaFerlini/Documents/Education/Master/EIT-ITA/UPMC/NSD/Practical/Practical3/src/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

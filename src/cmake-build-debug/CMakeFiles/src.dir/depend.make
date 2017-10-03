@@ -6,4 +6,9 @@ CMakeFiles/src.dir/loadgraph.cpp.o: ../loadgraph.h
 
 CMakeFiles/src.dir/main.cpp.o: ../loadgraph.h
 CMakeFiles/src.dir/main.cpp.o: ../main.cpp
+CMakeFiles/src.dir/main.cpp.o: ../pagerank.h
+
+CMakeFiles/src.dir/pagerank.cpp.o: ../loadgraph.h
+CMakeFiles/src.dir/pagerank.cpp.o: ../pagerank.cpp
+CMakeFiles/src.dir/pagerank.cpp.o: ../pagerank.h
 

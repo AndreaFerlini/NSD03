@@ -177,6 +177,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/src.dir/build.make CMakeFiles/src.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+pagerank.o: pagerank.cpp.o
+
+.PHONY : pagerank.o
+
+# target to build an object file
+pagerank.cpp.o:
+	$(MAKE) -f CMakeFiles/src.dir/build.make CMakeFiles/src.dir/pagerank.cpp.o
+.PHONY : pagerank.cpp.o
+
+pagerank.i: pagerank.cpp.i
+
+.PHONY : pagerank.i
+
+# target to preprocess a source file
+pagerank.cpp.i:
+	$(MAKE) -f CMakeFiles/src.dir/build.make CMakeFiles/src.dir/pagerank.cpp.i
+.PHONY : pagerank.cpp.i
+
+pagerank.s: pagerank.cpp.s
+
+.PHONY : pagerank.s
+
+# target to generate assembly for a file
+pagerank.cpp.s:
+	$(MAKE) -f CMakeFiles/src.dir/build.make CMakeFiles/src.dir/pagerank.cpp.s
+.PHONY : pagerank.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -192,6 +219,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... pagerank.o"
+	@echo "... pagerank.i"
+	@echo "... pagerank.s"
 .PHONY : help
 
 
