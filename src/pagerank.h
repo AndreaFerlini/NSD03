@@ -7,6 +7,6 @@
 
 #include "loadgraph.h"
 
-void computePageRank(double *p, AdjacencyList& adjList, double alpha, int threshold);
+void computePageRank(double *p, AdjacencyList& adjList, double alpha, int threshold, bool debug);
 
 #endif //SRC_PAGERANK_H

@@ -18,7 +18,7 @@ int main() {
 
     double alpha = 0.15;
     double *page_rank_array;
-    int th = 50;
+    int th = 10;
 
     double max_rank = 0;
     unsigned int node_max_rank=0;
@@ -36,7 +36,7 @@ int main() {
 
     page_rank_array = new double [loadedGraph.num_vertices];
 
-    computePageRank(page_rank_array, loadedGraph, alpha, th);
+    computePageRank(page_rank_array, loadedGraph, alpha, th, debug);
 
 /*
  * for (unsigned int i=0; i < loadedGraph.num_vertices; i++){
