@@ -18,21 +18,26 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
         //cout << "[PAGE RANK COMPUTATION] - init value of p[" << i << "]: " << p[i] << endl;
     }
 
+
     // page rank computation
     for(unsigned int i=0; i < adjList.num_vertices; i++){
-        if(adjList.getDegree(i) != 0){
+        if(adjList.getDegreeIn(i) != 0){
             // Transition Matrix
-            p[i]=p[i]/(adjList.getDegree(i)); //TODO divide for in_degree (?) @ the moment is in_degree
+            p[i]=p[i]/(adjList.getDegreeIn(i));
             //cout << "[PAGE RANK COMPUTATION] - degree of " << i << ": " << adjList.getDegree(i) << endl;
             //cout << "[PAGE RANK COMPUTATION] - transition matrix p[" << i << "]: " << p[i] << endl;
         } else {
             p[i] = 0;
         }
-        //cout << "[PAGE RANK COMPUTATION] - calculate p[" << i << "]: " << p[i] << endl;
-        for (unsigned int j = 0; j < adjList.getDegree(i); j++) { //TODO use out_degree (?) @ the moment is in_degree
-            p[i] += alpha * p0 + (1 - alpha) * p[adjList.neighbours_list[(adjList.list_beginning[i] + j)]];
-            //cout << "[PAGE RANK COMPUTATION] - update value of p[" << i << "]: " << p[i] << endl;
-        }
+//        while(iteration < threshold){
+            //cout << "[PAGE RANK COMPUTATION] - calculate p[" << i << "]: " << p[i] << endl;
+            for (unsigned int j = 0; j < adjList.getDegreeIn(i); j++) {
+                p[i] += alpha * p0 + (1 - alpha) * p[adjList.in_neighbours_list[(adjList.in_list_beginning[i] + j)]];
+                //cout << "[PAGE RANK COMPUTATION] - update value of p[" << i << "]: " << p[i] << endl;
+            }
+//            iteration ++;
+//        }
+
     }
     // normalization
     ranks = 0;
@@ -40,6 +45,8 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
         ranks = ranks + p[i];
         //cout << "ranks = " << ranks << " @ iteration " << i << endl;
     }
+
+
     //cout << "[PAGE RANK COMPUTATION] - Total Page Rank: " << ranks << endl;
     tot_rank = 0;
     for (unsigned int i=0; i < adjList.num_vertices; i++){

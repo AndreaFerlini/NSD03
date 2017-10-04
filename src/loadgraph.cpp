@@ -63,7 +63,9 @@ int computeDegree(string filename, GraphDegree &nodesDegree, bool is_weighted, b
     if (graphSize(filename, nodesDegree.graph_size, nodesDegree.graph_volume, is_weighted, debug))
         return -1;
 
-    nodesDegree.degree_array = new unsigned int[nodesDegree.graph_size]();
+    //TODO look for more efficient memory allocation
+    nodesDegree.in_degree_array = new unsigned int[nodesDegree.graph_size]();
+    nodesDegree.out_degree_array = new unsigned int[nodesDegree.graph_size]();
 
     if (debug) cout << time(nullptr) << "[Graph Degree] Opening the file..." << endl;
     graph.open(filename, ios::in);
@@ -83,14 +85,13 @@ int computeDegree(string filename, GraphDegree &nodesDegree, bool is_weighted, b
 
             // Increase the degree of the node
             /// TUNED LOAD GRAPH TO DEAL WITH ONLY IN_DEGREE
-            /*
+
             if (node)
-                nodesDegree.degree_array[node-1]++;
-            */
+                nodesDegree.out_degree_array[node-1]++;
 
             // Increase the degree of the neighbour
             if (neighbour)
-                nodesDegree.degree_array[neighbour-1]++;
+                nodesDegree.in_degree_array[neighbour-1]++;
         }
         /// DEBUG
         if (debug){
@@ -110,7 +111,8 @@ int computeDegree(string filename, GraphDegree &nodesDegree, bool is_weighted, b
 // Loading the adjacency list & store it in memory
 int loadAdjListContiguous(string filename, AdjacencyList& adjList, bool is_weighted, bool debug){
     fstream graph;
-    unsigned int cursor = 0;
+    unsigned int cursor_in = 0;
+    unsigned int cursor_out = 0;
 
     /// -------- STRUCTURE INIT -----------
     // Compute the degree of the graph, and link it to the structure, updating size and volume
@@ -120,26 +122,43 @@ int loadAdjListContiguous(string filename, AdjacencyList& adjList, bool is_weigh
     adjList.num_edges =  adjList.adjNodesDegree.graph_volume;
     adjList.is_weighted = is_weighted;
 
-    // Sum the degree of every node
+    // Sum the in degree of every node
     for (unsigned int i=0; i < adjList.num_vertices; i++){
-        adjList.size_neighbour_list += adjList.adjNodesDegree.degree_array[i];
+        adjList.size_neighbour_list_in += adjList.adjNodesDegree.in_degree_array[i];
+    }
+    // Sum the out degree of every node
+    for (unsigned int i=0; i < adjList.num_vertices; i++){
+        adjList.size_neighbour_list_out += adjList.adjNodesDegree.out_degree_array[i];
     }
 
-    // update total number of entry in the neighbours list
-    adjList.neighbours_list = new unsigned int[adjList.size_neighbour_list];   // List of neighbours in a compact way
+    // update total number of entry in the neighbours list in
+    adjList.in_neighbours_list= new unsigned int[adjList.size_neighbour_list_in];   // List of neighbours in a compact way
+    // update total number of entry in the neighbours list out
+    adjList.out_neighbours_list= new unsigned int[adjList.size_neighbour_list_out];   // List of neighbours in a compact way
+
 
     // Contains the index of the neighbours_list where the list of neighbours (of the i node) starts
-    adjList.list_beginning = new unsigned int[adjList.num_vertices]();
+    adjList.in_list_beginning = new unsigned int[adjList.num_vertices]();
+    // Contains the index of the neighbours_list where the list of neighbours (of the i node) starts
+    adjList.out_list_beginning = new unsigned int[adjList.num_vertices]();
 
     // Contains the list of the weight per edge
     if (is_weighted)
-        adjList.weights_list = new unsigned int[adjList.size_neighbour_list]();
+        adjList.weights_list_in = new unsigned int[adjList.size_neighbour_list_in]();
+    // Contains the list of the weight per edge
+    if (is_weighted)
+        adjList.weights_list_out = new unsigned int[adjList.size_neighbour_list_out]();
 
 
     // Initialize list_beginning to point at the beginning of their list
     for (unsigned int node_idx=0; node_idx < adjList.num_vertices; node_idx++){
-        adjList.list_beginning[node_idx] = cursor;
-        cursor += adjList.adjNodesDegree.degree_array[node_idx];
+        adjList.in_list_beginning[node_idx] = cursor_in;
+        cursor_in += adjList.adjNodesDegree.in_degree_array[node_idx];
+    }
+    // Initialize list_beginning to point at the beginning of their list
+    for (unsigned int node_idx=0; node_idx < adjList.num_vertices; node_idx++){
+        adjList.out_list_beginning[node_idx] = cursor_out;
+        cursor_out += adjList.adjNodesDegree.out_degree_array[node_idx];
     }
 
     if(debug) cout << time(nullptr) <<  "[Compact Adjacency List] Opening the file..." << endl;
@@ -163,33 +182,38 @@ int loadAdjListContiguous(string filename, AdjacencyList& adjList, bool is_weigh
                 graph >> node >> neighbour;
             }
 /// TUNED LOAD GRAPH TO DEAL WITH ONLY IN_NEIGHBOURS
-/*
+
             if(node) {
-                adjList.neighbours_list[adjList.list_beginning[node - 1]] = neighbour;
+                adjList.out_neighbours_list[adjList.out_list_beginning[node - 1]] = neighbour;
 
                 // Load weight only if it is weighted
                 if (is_weighted)
-                    adjList.weights_list[adjList.list_beginning[node - 1]] = weight;
+                    adjList.weights_list_out[adjList.out_list_beginning[node - 1]] = weight;
                 // Increase cursor to write the next neighbour in the correct location
-                adjList.list_beginning[node-1]++;
+                adjList.out_list_beginning[node-1]++;
             }
-*/
+
 
             if(neighbour) {
-                adjList.neighbours_list[adjList.list_beginning[neighbour - 1]] = node;
+                adjList.in_neighbours_list[adjList.in_list_beginning[neighbour - 1]] = node;
 
                 // Load weight only if it is weighted
                 if (is_weighted)
-                    adjList.weights_list[adjList.list_beginning[neighbour - 1]] = weight;
+                    adjList.weights_list_in[adjList.in_list_beginning[neighbour - 1]] = weight;
                 // Increase cursor to write the next neighbour in the correct location
-                adjList.list_beginning[neighbour-1]++;
+                adjList.in_list_beginning[neighbour-1]++;
             }
         }
 
         // Reset beginning position (going backwards of a nr of steps equal to the degree of the node)
         for (unsigned int node_idx=0; node_idx < adjList.num_vertices; node_idx++){
-            adjList.list_beginning[node_idx] -= adjList.adjNodesDegree.degree_array[node_idx];
+            adjList.out_list_beginning[node_idx] -= adjList.adjNodesDegree.out_degree_array[node_idx];
         }
+        // Reset beginning position (going backwards of a nr of steps equal to the degree of the node)
+        for (unsigned int node_idx=0; node_idx < adjList.num_vertices; node_idx++){
+            adjList.in_list_beginning[node_idx] -= adjList.adjNodesDegree.in_degree_array[node_idx];
+        }
+
         if(debug) cout << time(nullptr) << "[Compact Adjacency List]  Finished! Graph loaded." << endl;
 
         /// DEBUG
