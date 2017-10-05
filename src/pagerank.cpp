@@ -22,38 +22,56 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
 
 
     // PAGE RANK COMPUTATION
-    //for (iteration = 0; iteration < threshold; iteration ++){
+    for (iteration = 0; iteration < threshold; iteration ++){
+
         for(unsigned int i=0; i < adjList.num_vertices; i++) {
             if (adjList.getDegreeOut(i) != 0) {
                 // Transition Matrix
-                p[i] = p[i] / (adjList.getDegreeOut(i));
+                p[i] = p[i] /(double) (adjList.getDegreeOut(i));
                 if (debug){
                     cout << "[PAGE RANK COMPUTATION] - degree of " << i << ": " << adjList.getDegreeOut(i) << endl;
                     cout << "[PAGE RANK COMPUTATION] - transition matrix p[" << i << "]: " << p[i] << endl;
                 }
             } else {
-                p[i] = 0;
+                p[i] = 1.0/adjList.num_vertices;
             }
         }
+
         for(unsigned int i=0; i < adjList.num_vertices; i++) {
             p_in_neighbours = 0;
             if (debug)
                 cout << "[PAGE RANK COMPUTATION] - calculate p[" << i << "]: " << p[i] << endl;
             if (adjList.getDegreeIn(i)>0){
                 for (unsigned int j = 0; j < adjList.getDegreeIn(i); j++) {
-                    p_in_neighbours += p[adjList.in_neighbours_list[(adjList.in_list_beginning[i] + j)]];
+                    unsigned int neighbour = adjList.getFirstNeighbourIdIn(i)+j;
+
+                    if (adjList.getDegreeIn(adjList.in_neighbours_list[neighbour]) != 0){
+                        // sum of all the prob. of coming from a neigh. to [i]
+                        // every of them is given by: prob of being in the neigh * prob of reach that node
+                        // (number of links into that node -> the more and the easier getting there)
+                        p_in_neighbours += p[adjList.in_neighbours_list[neighbour]]
+                                           * (1.0/adjList.getDegreeIn(adjList.in_neighbours_list[neighbour]));
+
+                    }else{
+                        // if no links directed to the neighbour node -> the only way to get into it is p0
+                        p_in_neighbours += p[adjList.in_neighbours_list[neighbour]] * p0;
+                    }
+
                     if (debug)
                         cout << "[PAGE RANK COMPUTATION] - update value of p[" << i << "]: " << p[i] << endl;
                 }
-                p[i] += (alpha * p0) + (1 - alpha) * p_in_neighbours;
+                // page rank of [i] = arriving in [i] thanks to random teleport (alpha * p0) +
+                // probability of coming from one of [i]'s neighbours -> sum of all the prob. of coming from a neigh.
+                p[i] = (alpha * p0) + ((1 - alpha) * p_in_neighbours);
                 if (debug)
                     cout << "[PAGE RANK COMPUTATION] - update value of p[" << i << "]: " << p[i] << endl;
             } else {
+                // if no links in [i]
                 p[i] = (alpha * p0);
             }
         }
-    //}
-
+    }
+    
     // normalization
     ranks = 0;
     for (unsigned int i=0; i < adjList.num_vertices; i++){
@@ -64,7 +82,7 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
 
     tot_rank = 0;
     for (unsigned int i=0; i < adjList.num_vertices; i++){
-        p[i] += (1-ranks)/adjList.num_vertices;
+        p[i] += (1-ranks)/(double)adjList.num_vertices;
         tot_rank += p[i];
     }
     cout << "[PAGE RANK COMPUTATION] - Total Page Rank: " << tot_rank << endl;

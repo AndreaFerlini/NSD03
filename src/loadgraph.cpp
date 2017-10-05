@@ -181,7 +181,6 @@ int loadAdjListContiguous(string filename, AdjacencyList& adjList, bool is_weigh
             }else{
                 graph >> node >> neighbour;
             }
-/// TUNED LOAD GRAPH TO DEAL WITH ONLY IN_NEIGHBOURS
 
             if(node) {
                 adjList.out_neighbours_list[adjList.out_list_beginning[node - 1]] = neighbour;
@@ -192,7 +191,6 @@ int loadAdjListContiguous(string filename, AdjacencyList& adjList, bool is_weigh
                 // Increase cursor to write the next neighbour in the correct location
                 adjList.out_list_beginning[node-1]++;
             }
-
 
             if(neighbour) {
                 adjList.in_neighbours_list[adjList.in_list_beginning[neighbour - 1]] = node;

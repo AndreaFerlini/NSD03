@@ -32,18 +32,18 @@ int main() {
         return -1;
 
     cout << "[MAIN] - Print loaded graph" << endl;
-    //loadedGraph.print(debug);
+    if(debug)
+        loadedGraph.print(debug);
 
     page_rank_array = new double [loadedGraph.num_vertices];
 
     computePageRank(page_rank_array, loadedGraph, alpha, th, debug);
 
-/*
- * for (unsigned int i=0; i < loadedGraph.num_vertices; i++){
-        cout << page_rank_array[i] << " ";
+    if (debug){
+        for (unsigned int i=0; i < loadedGraph.num_vertices; i++){
+            cout << page_rank_array[i] << " ";
+        }
     }
- *
- */
 
     for (unsigned int i=0; i < loadedGraph.num_vertices; i++){
         if (page_rank_array[i] > max_rank){
@@ -52,8 +52,9 @@ int main() {
         }
     }
 
-    cout << endl;
+    cout << endl << endl;
     cout << "Node with highest rank: " << node_max_rank+1 << endl;
+    cout << "Page Rank: " << page_rank_array[node_max_rank] << endl;
     cout << endl;
 
     delete[] page_rank_array;
