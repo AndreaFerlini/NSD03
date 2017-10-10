@@ -12,6 +12,23 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
     // init p[i]
     double p0 = (double) 1/adjList.num_vertices;
     double p_in_neighbours = 0;
+
+    //Variables to check the convergence
+    unsigned int *sampled_nodes;
+    sampled_nodes = new unsigned int [10]{572, 1252, 2296, 4218, 9405, 11616, 17168, 18628, 23424, 26975};
+    double **convergence_matrix;
+    convergence_matrix = new double* [10]();
+
+    //Randomly chosing the nodes I want to plot
+    /*for (int k=0; k < 10; k ++){
+        sampled_nodes[k] = rand() % adjList.num_vertices;
+    }*/
+
+    //Init the matrix
+    for (int row = 0; row < 10; row++) {
+        convergence_matrix[row] = new double [threshold];
+    }
+
     if (debug)
         cout << "[PAGE RANK COMPUTATION] - number of vertices: " << adjList.num_vertices << endl;
 
@@ -71,7 +88,12 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
             }
         }
 
-        //TODO plot k random nodes pagerank values @ every iteration
+        //Fill the matrix at every iteration
+        for (int k = 0; k < 10; k++) {
+            convergence_matrix[k][iteration] = p[sampled_nodes[k]];
+        }
+        //TODO print the matrix in a file such that gnuplot can create graphs
+
     }
     
     // normalization
@@ -90,6 +112,14 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
     cout << "[PAGE RANK COMPUTATION] - Total Page Rank: " << tot_rank << endl;
 
     printMinMax(p, adjList);
+
+    for(int x = 0 ; x < 10 ; x++) {
+        cout << " (";
+        for(int y = 0 ; y < threshold ; y++){
+            cout <<"     "<<convergence_matrix[x][y];
+        }
+        cout << endl;
+    }
 }
 
 void printMinMax(double *p, AdjacencyList& adjList){
