@@ -6,6 +6,9 @@
 
 void computePageRank(double *p, AdjacencyList& adjList, double alpha, int threshold, bool debug){
 
+    ofstream convergence_file;
+    convergence_file.open ("../../graphs/convergence_plot.txt");
+
     int iteration=0;
     double ranks;
     double tot_rank=0;
@@ -91,6 +94,7 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
         //Fill the matrix at every iteration
         for (int k = 0; k < 10; k++) {
             convergence_matrix[k][iteration] = p[sampled_nodes[k]];
+            convergence_file << iteration+1 << " " << convergence_matrix[k][iteration] << endl;
         }
         //TODO print the matrix in a file such that gnuplot can create graphs
 
@@ -116,7 +120,7 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
     for(int x = 0 ; x < 10 ; x++) {
         cout << " (";
         for(int y = 0 ; y < threshold ; y++){
-            cout <<"     "<<convergence_matrix[x][y];
+            cout <<"     "<< convergence_matrix[x][y];
         }
         cout << endl;
     }
