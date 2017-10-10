@@ -18,11 +18,15 @@ int main() {
 
     double alpha = 0.15;
     double *page_rank_array;
-    int th = 10;
+    int th = 20;
 
     double max_rank = 0;
     unsigned int node_max_rank=0;
 
+    double min_rank = 0;
+    unsigned int node_min_rank = 0;
+
+    cout << "STARTED" << endl;
 
     if (!file.good())
         cout << "No such file... " << endl;
@@ -45,10 +49,16 @@ int main() {
         }
     }
 
-    for (unsigned int i=0; i < loadedGraph.num_vertices; i++){
+    /*for (unsigned int i=0; i < loadedGraph.num_vertices; i++){
         if (page_rank_array[i] > max_rank){
             max_rank = page_rank_array[i];
             node_max_rank = i;
+        }
+        if (page_rank_array[i] < min_rank){
+            if (page_rank_array[i] != 0.0){
+                min_rank = page_rank_array[i];
+                node_min_rank = i;
+            }
         }
     }
 
@@ -56,6 +66,10 @@ int main() {
     cout << "Node with highest rank: " << node_max_rank+1 << endl;
     cout << "Page Rank: " << page_rank_array[node_max_rank] << endl;
     cout << endl;
+
+    cout << "Node with lowest rank: " << node_min_rank+1 << endl;
+    cout << "Page Rank: " << page_rank_array[node_min_rank] << endl;
+    cout << endl;*/
 
     delete[] page_rank_array;
     return 0;

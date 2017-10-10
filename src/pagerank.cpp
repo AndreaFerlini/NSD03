@@ -86,4 +86,42 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
         tot_rank += p[i];
     }
     cout << "[PAGE RANK COMPUTATION] - Total Page Rank: " << tot_rank << endl;
+
+    printMinMax(p, adjList);
+}
+
+void printMinMax(double *p, AdjacencyList& adjList){
+
+    double max_rank = 0;
+    unsigned int node_max_rank = 0;
+
+    double min_rank = -1;
+    unsigned int node_min_rank = 0;
+
+    for (unsigned int i=0; i < adjList.num_vertices; i++){
+        if (p[i] > max_rank){
+            max_rank = p[i];
+            node_max_rank = i;
+        }
+
+        if (adjList.getDegreeOut(i) > 0.0 || adjList.getDegreeIn(i) > 0.0){
+            if (min_rank < 0){
+                min_rank = p[i];
+                node_min_rank = i;
+            }
+            if (p[i] < min_rank){
+                min_rank = p[i];
+                node_min_rank = i;
+            }
+        }
+    }
+
+    cout << endl << endl;
+    cout << "Node with highest rank: " << node_max_rank+1 << endl;
+    cout << "Page Rank: " << p[node_max_rank] << endl;
+    cout << endl;
+
+    cout << "Node with lowest rank: " << node_min_rank+1 << endl;
+    cout << "Page Rank: " << p[node_min_rank] << endl;
+    cout << endl;
 }
