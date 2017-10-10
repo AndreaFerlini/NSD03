@@ -19,7 +19,7 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
     //Variables to check the convergence
     unsigned int *sampled_nodes;
     sampled_nodes = new unsigned int [10]{572, 1252, 2296, 4218, 9405, 11616, 17168, 18628, 23424, 26975};
-    double **convergence_matrix;
+    double **convergence_matrix = nullptr;
     convergence_matrix = new double* [10]();
 
     //Randomly chosing the nodes I want to plot
@@ -96,8 +96,6 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
             convergence_matrix[k][iteration] = p[sampled_nodes[k]];
             convergence_file << iteration+1 << " " << convergence_matrix[k][iteration] << endl;
         }
-        //TODO print the matrix in a file such that gnuplot can create graphs
-
     }
     
     // normalization
@@ -124,6 +122,12 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
         }
         cout << endl;
     }
+
+    for (int row = 0; row < 10; row++) {
+        delete[] convergence_matrix[row];
+    }
+    delete[] convergence_matrix;
+
 }
 
 void printMinMax(double *p, AdjacencyList& adjList){
