@@ -17,8 +17,7 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
     double p_in_neighbours = 0;
 
     //Variables to check the convergence
-    unsigned int *sampled_nodes;
-    sampled_nodes = new unsigned int [10]{572, 1252, 2296, 4218, 9405, 11616, 17168, 18628, 23424, 26975};
+    unsigned int sampled_nodes[] = {572, 1252, 2296, 4218, 9405, 11616, 17168, 18628, 23424, 26975};
     double **convergence_matrix = nullptr;
     convergence_matrix = new double* [10]();
 
