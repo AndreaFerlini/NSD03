@@ -70,6 +70,8 @@ void computePageRank(double *p, AdjacencyList& adjList, double alpha, int thresh
                 p[i] = (alpha * p0);
             }
         }
+
+        //TODO plot k random nodes pagerank values @ every iteration
     }
     
     // normalization
