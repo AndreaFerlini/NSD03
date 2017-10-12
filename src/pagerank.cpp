@@ -7,7 +7,7 @@
 void computePageRank(double *p, AdjacencyList& adjList, double alpha, int threshold, bool debug){
 
     ofstream convergence_file;
-    convergence_file.open ("../../graphs/convergence_plot.txt");
+    convergence_file.open ("../../output/convergence_plot.txt");
 
     int iteration=0;
     double ranks;
